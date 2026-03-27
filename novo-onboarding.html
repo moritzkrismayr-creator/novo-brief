@@ -154,6 +154,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 
 /* SUCCESS */
 .success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 40px 20px; background: var(--bg); position: fixed; inset: 0; z-index: 999; }
+.success-screen.show { display: flex; }
 .success-icon { font-size: 4rem; margin-bottom: 20px; }
 .success-screen h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
 .success-screen p { color: var(--ink2); font-size: 1rem; max-width: 480px; margin: 0 auto; }
@@ -906,7 +907,7 @@ form.addEventListener('submit', async function(e) {
       document.querySelector('.header').style.display = 'none';
       document.querySelector('.progress-wrap').style.display = 'none';
       document.querySelector('.main').style.display = 'none';
-      document.getElementById('successScreen').style.display = 'flex';
+      document.getElementById('successScreen').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       var json = await res.json();

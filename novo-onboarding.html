@@ -155,10 +155,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 /* SUCCESS */
 .success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 40px 20px; background: var(--bg); position: fixed; inset: 0; z-index: 999; }
 .success-screen.show { display: flex; }
-body.success-mode .header { display: none !important; }
-body.success-mode .progress-wrap { display: none !important; }
-body.success-mode .main { display: none !important; }
-body.success-mode .success-screen { display: flex !important; }
+html.success-mode .header { display: none !important; }
+html.success-mode .progress-wrap { display: none !important; }
+html.success-mode .main { display: none !important; }
+html.success-mode .success-screen { display: flex !important; }
 .success-icon { font-size: 4rem; margin-bottom: 20px; }
 .success-screen h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
 .success-screen p { color: var(--ink2); font-size: 1rem; max-width: 480px; margin: 0 auto; }
@@ -181,6 +181,17 @@ body.success-mode .success-screen { display: flex !important; }
 </style>
 </head>
 <body>
+<script>
+if (window.location.search.indexOf('success=1') !== -1) {
+  document.documentElement.classList.add('success-mode');
+}
+</script>
+<script>
+// Immediately check URL before anything renders
+if (window.location.search.indexOf('success=1') !== -1) {
+  document.write('<style>body>*:not(#successScreen){display:none!important}.success-screen{display:flex!important}</style>');
+}
+</script>
 
 <div class="header">
   <div class="header-logo">Novo<span>.</span></div>
@@ -223,7 +234,7 @@ body.success-mode .success-screen { display: flex !important; }
 
 <div class="main">
 <form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST" enctype="multipart/form-data">
-<input type="hidden" name="_next" value="https://moritzkrismayr-creator.github.io/novo-brief/novo-onboarding.html?success=1">
+<input type="hidden" name="_next" value="https://moritzkrismayr-creator.github.io/novo-brief/success.html">
 
 <!-- STEP 1: BUSINESS INFO -->
 <div class="step-panel active" id="step-1">
@@ -847,10 +858,7 @@ body.success-mode .success-screen { display: flex !important; }
 </div>
 
 <script>
-// Show success screen if redirected back after Formspree submit
-if (window.location.search.indexOf('success=1') !== -1) {
-  document.body.classList.add('success-mode');
-}
+
 
 var current = 1;
 var total = 6;

@@ -847,7 +847,7 @@ if (window.location.search.indexOf('success=1') !== -1) {
           </div>
         </div>
       </div>
-      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="/cdn-cgi/l/email-protection#c7a4a8a9b3a6a4b387a9a8b1a8b0a2a5b7a6a0a2b4e9a4a8aa" style="color:#1a56ff;font-weight:600;"><span class="__cf_email__" data-cfemail="197a76776d787a6d5977766f766e7c7b69787e7c6a377a7674">[email&#160;protected]</span></a></div>
+      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="/cdn-cgi/l/email-protection#2f4c40415b4e4c5b6f41405940584a4d5f4e484a5c014c4042" style="color:#1a56ff;font-weight:600;"><span class="__cf_email__" data-cfemail="a0c3cfced4c1c3d4e0cecfd6cfd7c5c2d0c1c7c5d38ec3cfcd">[email&#160;protected]</span></a></div>
     </div>
     <div style="text-align:center;margin-top:20px;">
       <a href="https://novowebpages.com" style="color:#999;font-size:.82rem;text-decoration:none;">← Back to novowebpages.com</a>
@@ -1078,4 +1078,11 @@ if (window.location.hash === '#email-template') {
 
 function copyEmail() {
   var text = document.getElementById('emailBody').innerText;
-  nav
+  navigator.clipboard.writeText(text).then(function() {
+    document.getElementById('copyConfirm').style.display = 'block';
+    setTimeout(function() { document.getElementById('copyConfirm').style.display = 'none'; }, 2500);
+  });
+}
+</script>
+</body>
+</html>

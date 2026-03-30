@@ -348,15 +348,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
   <div class="card">
     <div class="card-title">Primary Goal</div>
     <div class="fg">
-      <label>What is the #1 action you want visitors to take? *</label>
-      <div class="radio-group">
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g1" value="Call us directly"><label for="g1"><div class="radio-dot"></div> Call us directly</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g2" value="Fill in a contact / enquiry form"><label for="g2"><div class="radio-dot"></div> Fill in a contact / enquiry form</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g3" value="Book an appointment online"><label for="g3"><div class="radio-dot"></div> Book an appointment online</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g4" value="Visit us in person"><label for="g4"><div class="radio-dot"></div> Visit us in person</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g5" value="Buy a product online"><label for="g5"><div class="radio-dot"></div> Buy a product online</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g6" value="Get a quote"><label for="g6"><div class="radio-dot"></div> Get a quote</label></div>
-        <div class="radio-item"><input type="radio" name="primary_goal" id="g7" value="Other"><label for="g7"><div class="radio-dot"></div> Other</label></div>
+      <label>What should visitors do on your website? *</label>
+      <div class="hint">Select all that apply.</div>
+      <div class="check-grid">
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g1" value="Call us directly"><label for="g1"><div class="check-box"></div> Call us directly</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g2" value="Fill in a contact / enquiry form"><label for="g2"><div class="check-box"></div> Enquiry form</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g3" value="Book an appointment online"><label for="g3"><div class="check-box"></div> Book an appointment</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g4" value="Visit us in person"><label for="g4"><div class="check-box"></div> Visit us in person</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g5" value="Buy a product online"><label for="g5"><div class="check-box"></div> Buy a product online</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g6" value="Get a quote"><label for="g6"><div class="check-box"></div> Get a quote</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g7" value="Learn about our services"><label for="g7"><div class="check-box"></div> Learn about services</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g8" value="Other"><label for="g8"><div class="check-box"></div> Other</label></div>
       </div>
     </div>
   </div>
@@ -807,9 +809,34 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 
 <!-- SUCCESS -->
 <div class="success-screen" id="successScreen">
-  <div class="success-icon">🎉</div>
-  <h2>You're all set!</h2>
-  <p>Thanks for filling everything in. Moritz will review your brief and be in touch within 24 hours with next steps and your proposal.</p>
+  <div style="max-width:520px;width:100%;">
+    <div style="background:#fff;border-radius:20px;padding:48px 40px;box-shadow:0 8px 48px rgba(0,0,0,.1);text-align:center;">
+      <div style="width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2rem;">✓</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-.5px;margin-bottom:12px;color:#0a0a0a;">Brief received!</h2>
+      <p style="color:#555;font-size:1rem;line-height:1.7;margin-bottom:32px;">Thanks for filling out your Novo brief. We've received everything and will get back to you within <strong>24 hours</strong> with a full proposal and fixed price.</p>
+      <div style="background:#f7f8fc;border:1px solid #e2e4ea;border-radius:12px;padding:20px;text-align:left;margin-bottom:28px;">
+        <div style="font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#999;margin-bottom:12px;">What happens next</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">1</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">We review your brief and prepare a custom proposal tailored to your business.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">2</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">You receive a clear scope, timeline, and fixed price — no surprises.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">3</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">Once you approve the proposal and pay the 50% deposit, we get to work.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="mailto:contact@novowebpages.com" style="color:#1a56ff;font-weight:600;">contact@novowebpages.com</a></div>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="https://novowebpages.com" style="color:#999;font-size:.82rem;text-decoration:none;">← Back to novowebpages.com</a>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -854,7 +881,7 @@ function showFiles(input, targetId) {
 }
 
 var form = document.getElementById('onboardingForm');
-form.addEventListener('submit', async function(e) {
+form.addEventListener('submit', function(e) {
   e.preventDefault();
 
   // Validate required fields
@@ -865,13 +892,18 @@ form.addEventListener('submit', async function(e) {
     { name: 'email', label: 'Email Address', step: 1 },
     { name: 'business_description', label: 'Business Description', step: 1 },
     { name: 'industry', label: 'Industry', step: 1 },
-    { name: 'primary_goal', label: 'Primary Goal', step: 2 }
+    { name: 'primary_goal[]', label: 'Website Goals', step: 2, type: 'checkbox' }
   ];
 
   var firstErrorStep = null;
   requiredFields.forEach(function(f) {
-    var el = form.querySelector('[name="' + f.name + '"]');
-    var val = el ? (el.type === 'radio' ? form.querySelector('[name="' + f.name + '"]:checked') : el.value.trim()) : null;
+    var val;
+    if (f.type === 'checkbox') {
+      val = form.querySelector('[name="' + f.name + '"]:checked');
+    } else {
+      var el = form.querySelector('[name="' + f.name + '"]');
+      val = el ? (el.type === 'radio' ? form.querySelector('[name="' + f.name + '"]:checked') : el.value.trim()) : null;
+    }
     if (!val) {
       errors.push({ label: f.label, step: f.step });
       if (!firstErrorStep) firstErrorStep = f.step;
@@ -879,45 +911,61 @@ form.addEventListener('submit', async function(e) {
   });
 
   if (errors.length > 0) {
-    // Go to first step with error
     goTo(firstErrorStep);
-    // Show error message
     var existingError = document.getElementById('validationError');
     if (existingError) existingError.remove();
     var errorDiv = document.createElement('div');
     errorDiv.id = 'validationError';
     errorDiv.style.cssText = 'background:#fff0f0;border:1px solid #ffaaaa;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#c00;';
     errorDiv.innerHTML = '<strong>Please fill in the following fields:</strong><ul style="margin-top:8px;padding-left:18px;">' +
-      errors.filter(function(e) { return e.step === firstErrorStep; }).map(function(e) { return '<li>' + e.label + '</li>'; }).join('') +
+      errors.filter(function(err) { return err.step === firstErrorStep; }).map(function(err) { return '<li>' + err.label + '</li>'; }).join('') +
       '</ul>';
     document.getElementById('step-' + firstErrorStep).prepend(errorDiv);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
 
+  // Show loading state on button
   var btn = form.querySelector('.btn-submit');
-  btn.textContent = 'Submitting...';
+  btn.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;"></span> Sending...';
   btn.disabled = true;
+  btn.style.opacity = '0.8';
+
+  // Add spinner animation if not already added
+  if (!document.getElementById('spinStyle')) {
+    var spinStyle = document.createElement('style');
+    spinStyle.id = 'spinStyle';
+    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(spinStyle);
+  }
 
   var data = new FormData(form);
-  try {
-    var res = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(res) {
     if (res.ok) {
-      // Hide everything except success
       document.querySelector('.header').style.display = 'none';
       document.querySelector('.progress-wrap').style.display = 'none';
       document.querySelector('.main').style.display = 'none';
       document.getElementById('successScreen').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      var json = await res.json();
-      btn.textContent = 'Something went wrong — try again';
-      btn.disabled = false;
+      return res.json().then(function(json) {
+        btn.innerHTML = '⚠ Something went wrong — try again';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      });
     }
-  } catch(err) {
-    btn.textContent = 'Something went wrong — try again';
+  })
+  .catch(function(err) {
+    btn.innerHTML = '⚠ Connection error — try again';
     btn.disabled = false;
-  }
+    btn.style.opacity = '1';
+  });
 });
 </script>
 

@@ -219,6 +219,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 
 <div class="main">
 <form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST" enctype="multipart/form-data">
+<input type="hidden" name="_next" value="https://moritzkrismayr-creator.github.io/novo-brief/novo-onboarding.html?success=1">
 
 <!-- STEP 1: BUSINESS INFO -->
 <div class="step-panel active" id="step-1">
@@ -842,6 +843,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 </div>
 
 <script>
+// Show success screen if redirected back after Formspree submit
+if (window.location.search.indexOf('success=1') !== -1) {
+  document.querySelector('.header').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.querySelector('.main').style.display = 'none';
+  document.getElementById('successScreen').classList.add('show');
+}
+
 var current = 1;
 var total = 6;
 
@@ -882,8 +891,6 @@ function showFiles(input, targetId) {
 
 var form = document.getElementById('onboardingForm');
 form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
   // Validate required fields
   var errors = [];
   var requiredFields = [
@@ -911,6 +918,7 @@ form.addEventListener('submit', function(e) {
   });
 
   if (errors.length > 0) {
+    e.preventDefault();
     goTo(firstErrorStep);
     var existingError = document.getElementById('validationError');
     if (existingError) existingError.remove();
@@ -925,47 +933,10 @@ form.addEventListener('submit', function(e) {
     return;
   }
 
-  // Show loading state on button
+  // Valid — show loading state and let form submit normally
   var btn = form.querySelector('.btn-submit');
-  btn.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;"></span> Sending...';
+  btn.innerHTML = 'Sending...';
   btn.disabled = true;
-  btn.style.opacity = '0.8';
-
-  // Add spinner animation if not already added
-  if (!document.getElementById('spinStyle')) {
-    var spinStyle = document.createElement('style');
-    spinStyle.id = 'spinStyle';
-    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-    document.head.appendChild(spinStyle);
-  }
-
-  var data = new FormData(form);
-
-  fetch(form.action, {
-    method: 'POST',
-    body: data,
-    headers: { 'Accept': 'application/json' }
-  })
-  .then(function(res) {
-    if (res.ok) {
-      document.querySelector('.header').style.display = 'none';
-      document.querySelector('.progress-wrap').style.display = 'none';
-      document.querySelector('.main').style.display = 'none';
-      document.getElementById('successScreen').classList.add('show');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      return res.json().then(function(json) {
-        btn.innerHTML = '⚠ Something went wrong — try again';
-        btn.disabled = false;
-        btn.style.opacity = '1';
-      });
-    }
-  })
-  .catch(function(err) {
-    btn.innerHTML = '⚠ Connection error — try again';
-    btn.disabled = false;
-    btn.style.opacity = '1';
-  });
 });
 </script>
 

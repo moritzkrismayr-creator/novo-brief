@@ -871,7 +871,77 @@ function goTo(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function next(n) { if (n < total) goTo(n + 1); }
+function showFieldError(fieldName, message) {
+  var el = document.querySelector('[name="' + fieldName + '"]');
+  if (!el) return;
+  var existing = el.parentNode.querySelector('.field-error');
+  if (existing) existing.remove();
+  var err = document.createElement('div');
+  err.className = 'field-error';
+  err.style.cssText = 'color:#e53e3e;font-size:.78rem;font-weight:600;margin-top:4px;';
+  err.textContent = message;
+  el.parentNode.appendChild(err);
+  el.style.borderColor = '#e53e3e';
+  el.addEventListener('input', function() {
+    err.remove();
+    el.style.borderColor = '';
+  }, { once: true });
+  el.addEventListener('change', function() {
+    err.remove();
+    el.style.borderColor = '';
+  }, { once: true });
+}
+
+function validateStep(n) {
+  var errors = false;
+  // Clear previous errors
+  document.querySelectorAll('.field-error').forEach(function(e) { e.remove(); });
+  document.querySelectorAll('.step-panel.active input, .step-panel.active textarea, .step-panel.active select').forEach(function(el) {
+    el.style.borderColor = '';
+  });
+
+  if (n === 1) {
+    var fields = [
+      { name: 'business_name', label: 'Business name is required' },
+      { name: 'contact_name', label: 'Your name is required' },
+      { name: 'email', label: 'Email address is required' },
+      { name: 'business_description', label: 'Please describe your business' },
+      { name: 'industry', label: 'Please select your industry' }
+    ];
+    fields.forEach(function(f) {
+      var el = document.querySelector('[name="' + f.name + '"]');
+      if (el && !el.value.trim()) {
+        showFieldError(f.name, f.label);
+        errors = true;
+      }
+    });
+  }
+
+  if (n === 2) {
+    var checked = document.querySelector('[name="primary_goal[]"]:checked');
+    if (!checked) {
+      var grid = document.querySelector('.check-grid');
+      var existing = grid.parentNode.querySelector('.field-error');
+      if (existing) existing.remove();
+      var err = document.createElement('div');
+      err.className = 'field-error';
+      err.style.cssText = 'color:#e53e3e;font-size:.78rem;font-weight:600;margin-top:4px;';
+      err.textContent = 'Please select at least one goal';
+      grid.parentNode.appendChild(err);
+      errors = true;
+    }
+  }
+
+  return !errors;
+}
+
+function next(n) {
+  if (!validateStep(n)) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  if (n < total) goTo(n + 1);
+}
 function prev(n) { if (n > 1) goTo(n - 1); }
 
 function updateProgress(from, to) {
@@ -947,6 +1017,82 @@ form.addEventListener('submit', function(e) {
   btn.innerHTML = 'Sending...';
   btn.disabled = true;
 });
+
+// ── AUTO-SAVE & RESTORE ──────────────────────────────────────────────
+var SAVE_KEY = 'novo_onboarding_draft';
+
+function saveProgress() {
+  var data = {};
+  var form = document.getElementById('onboardingForm');
+  form.querySelectorAll('input, textarea, select').forEach(function(el) {
+    if (!el.name) return;
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      if (el.checked) {
+        if (!data[el.name]) data[el.name] = [];
+        if (Array.isArray(data[el.name])) data[el.name].push(el.value);
+        else data[el.name] = el.value;
+      }
+    } else if (el.type !== 'file') {
+      data[el.name] = el.value;
+    }
+  });
+  data['_step'] = current;
+  localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+}
+
+function restoreProgress() {
+  var raw = localStorage.getItem(SAVE_KEY);
+  if (!raw) return;
+  var data;
+  try { data = JSON.parse(raw); } catch(e) { return; }
+  var form = document.getElementById('onboardingForm');
+  Object.keys(data).forEach(function(name) {
+    if (name === '_step') return;
+    var val = data[name];
+    var els = form.querySelectorAll('[name="' + name + '"]');
+    els.forEach(function(el) {
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        if (Array.isArray(val)) {
+          el.checked = val.indexOf(el.value) !== -1;
+        } else {
+          el.checked = el.value === val;
+        }
+      } else if (el.type !== 'file') {
+        el.value = val;
+      }
+    });
+  });
+  // Show draft banner if data exists
+  var hasDraft = Object.keys(data).some(function(k) { return k !== '_step' && data[k] && data[k].length > 0; });
+  if (hasDraft) showDraftBanner(data['_step'] || 1);
+}
+
+function clearProgress() {
+  localStorage.removeItem(SAVE_KEY);
+}
+
+function showDraftBanner(savedStep) {
+  var banner = document.createElement('div');
+  banner.id = 'draftBanner';
+  banner.style.cssText = 'background:#e8eeff;border:1px solid #c0d0ff;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#1a56ff;display:flex;align-items:center;justify-content:space-between;gap:12px;';
+  banner.innerHTML = '<span>💾 <strong>Draft saved</strong> — your progress has been restored from where you left off.</span>' +
+    '<button onclick="clearProgress();this.closest('#draftBanner').remove();" style="background:transparent;border:1.5px solid #1a56ff;color:#1a56ff;border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;">Clear draft</button>';
+  var main = document.querySelector('.main');
+  main.insertBefore(banner, main.firstChild);
+}
+
+// Save on every input change
+document.getElementById('onboardingForm').addEventListener('change', saveProgress);
+document.getElementById('onboardingForm').addEventListener('input', saveProgress);
+
+// Clear saved data on successful submit
+document.getElementById('onboardingForm').addEventListener('submit', function() {
+  clearProgress();
+});
+
+// Restore on page load
+restoreProgress();
+
 </script>
 
 <!-- EMAIL TEMPLATE PAGE - only visible via #email-template anchor -->

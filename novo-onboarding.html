@@ -847,7 +847,7 @@ if (window.location.search.indexOf('success=1') !== -1) {
           </div>
         </div>
       </div>
-      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="mailto:contact@novowebpages.com" style="color:#1a56ff;font-weight:600;">contact@novowebpages.com</a></div>
+      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="/cdn-cgi/l/email-protection#c7a4a8a9b3a6a4b387a9a8b1a8b0a2a5b7a6a0a2b4e9a4a8aa" style="color:#1a56ff;font-weight:600;"><span class="__cf_email__" data-cfemail="197a76776d787a6d5977766f766e7c7b69787e7c6a377a7674">[email&#160;protected]</span></a></div>
     </div>
     <div style="text-align:center;margin-top:20px;">
       <a href="https://novowebpages.com" style="color:#999;font-size:.82rem;text-decoration:none;">← Back to novowebpages.com</a>
@@ -857,7 +857,7 @@ if (window.location.search.indexOf('success=1') !== -1) {
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 
 var current = 1;
@@ -1018,80 +1018,6 @@ form.addEventListener('submit', function(e) {
   btn.disabled = true;
 });
 
-// ── AUTO-SAVE & RESTORE ──────────────────────────────────────────────
-var SAVE_KEY = 'novo_onboarding_draft';
-
-function saveProgress() {
-  var data = {};
-  var form = document.getElementById('onboardingForm');
-  form.querySelectorAll('input, textarea, select').forEach(function(el) {
-    if (!el.name) return;
-    if (el.type === 'checkbox' || el.type === 'radio') {
-      if (el.checked) {
-        if (!data[el.name]) data[el.name] = [];
-        if (Array.isArray(data[el.name])) data[el.name].push(el.value);
-        else data[el.name] = el.value;
-      }
-    } else if (el.type !== 'file') {
-      data[el.name] = el.value;
-    }
-  });
-  data['_step'] = current;
-  localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-}
-
-function restoreProgress() {
-  var raw = localStorage.getItem(SAVE_KEY);
-  if (!raw) return;
-  var data;
-  try { data = JSON.parse(raw); } catch(e) { return; }
-  var form = document.getElementById('onboardingForm');
-  Object.keys(data).forEach(function(name) {
-    if (name === '_step') return;
-    var val = data[name];
-    var els = form.querySelectorAll('[name="' + name + '"]');
-    els.forEach(function(el) {
-      if (el.type === 'checkbox' || el.type === 'radio') {
-        if (Array.isArray(val)) {
-          el.checked = val.indexOf(el.value) !== -1;
-        } else {
-          el.checked = el.value === val;
-        }
-      } else if (el.type !== 'file') {
-        el.value = val;
-      }
-    });
-  });
-  // Show draft banner if data exists
-  var hasDraft = Object.keys(data).some(function(k) { return k !== '_step' && data[k] && data[k].length > 0; });
-  if (hasDraft) showDraftBanner(data['_step'] || 1);
-}
-
-function clearProgress() {
-  localStorage.removeItem(SAVE_KEY);
-}
-
-function showDraftBanner(savedStep) {
-  var banner = document.createElement('div');
-  banner.id = 'draftBanner';
-  banner.style.cssText = 'background:#e8eeff;border:1px solid #c0d0ff;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#1a56ff;display:flex;align-items:center;justify-content:space-between;gap:12px;';
-  banner.innerHTML = '<span>💾 <strong>Draft saved</strong> — your progress has been restored from where you left off.</span>' +
-    '<button onclick="clearProgress();this.closest('#draftBanner').remove();" style="background:transparent;border:1.5px solid #1a56ff;color:#1a56ff;border-radius:6px;padding:5px 12px;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;">Clear draft</button>';
-  var main = document.querySelector('.main');
-  main.insertBefore(banner, main.firstChild);
-}
-
-// Save on every input change
-document.getElementById('onboardingForm').addEventListener('change', saveProgress);
-document.getElementById('onboardingForm').addEventListener('input', saveProgress);
-
-// Clear saved data on successful submit
-document.getElementById('onboardingForm').addEventListener('submit', function() {
-  clearProgress();
-});
-
-// Restore on page load
-restoreProgress();
 
 </script>
 
@@ -1152,11 +1078,4 @@ if (window.location.hash === '#email-template') {
 
 function copyEmail() {
   var text = document.getElementById('emailBody').innerText;
-  navigator.clipboard.writeText(text).then(function() {
-    document.getElementById('copyConfirm').style.display = 'block';
-    setTimeout(function() { document.getElementById('copyConfirm').style.display = 'none'; }, 2500);
-  });
-}
-</script>
-</body>
-</html>
+  nav

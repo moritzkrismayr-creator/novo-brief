@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novo – Website Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f8fc;
+  --card: #ffffff;
+  --ink: #0a0a0a;
+  --ink2: #555;
+  --ink3: #999;
+  --blue: #1a56ff;
+  --blue-light: #e8eeff;
+  --blue-mid: #c0d0ff;
+  --dark: #0d0f14;
+  --border: #e2e4ea;
+  --radius: 14px;
+  --shadow: 0 2px 16px rgba(0,0,0,.07);
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; min-height: 100vh; }
+
+/* HEADER */
+.header { background: var(--dark); padding: 20px 5%; display: flex; align-items: center; justify-content: space-between; }
+.header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: #fff; }
+.header-logo span { color: var(--blue); }
+.header-tag { font-size: .8rem; color: rgba(255,255,255,.4); }
+
+/* PROGRESS */
+.progress-wrap { background: #fff; border-bottom: 1px solid var(--border); padding: 0 5%; position: sticky; top: 0; z-index: 50; }
+.progress-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; gap: 0; padding: 16px 0; overflow-x: auto; }
+.prog-step { display: flex; align-items: center; gap: 8px; flex-shrink: 0; cursor: pointer; }
+.prog-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: .7rem; font-weight: 700; color: var(--ink3); transition: all .2s; font-family: 'Syne', sans-serif; }
+.prog-step.active .prog-dot { background: var(--blue); color: #fff; }
+.prog-step.done .prog-dot { background: #22c55e; color: #fff; }
+.prog-step.done .prog-dot::after { content: '✓'; }
+.prog-step.done .prog-num { display: none; }
+.prog-label { font-size: .72rem; font-weight: 600; color: var(--ink3); white-space: nowrap; transition: color .2s; }
+.prog-step.active .prog-label { color: var(--blue); }
+.prog-step.done .prog-label { color: #22c55e; }
+.prog-line { flex: 1; min-width: 20px; height: 1px; background: var(--border); margin: 0 6px; }
+.prog-step.done + .prog-line { background: #22c55e; }
+
+/* MAIN */
+.main { max-width: 760px; margin: 0 auto; padding: 40px 5% 80px; }
+
+/* STEP */
+.step-panel { display: none; animation: fadeIn .3s ease; }
+.step-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.step-header { margin-bottom: 36px; }
+.step-num-label { font-size: .72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+.step-title { font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: -.5px; margin-bottom: 8px; }
+.step-sub { color: var(--ink2); font-size: .95rem; }
+
+/* CARD */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 20px; box-shadow: var(--shadow); }
+.card-title { font-family: 'Syne', sans-serif; font-size: .85rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--ink3); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+/* FORM ELEMENTS */
+.fg { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+.fg:last-child { margin-bottom: 0; }
+.fg label { font-size: .82rem; font-weight: 600; color: var(--ink); }
+.fg .hint { font-size: .75rem; color: var(--ink3); margin-top: -2px; margin-bottom: 4px; }
+.fg input, .fg textarea, .fg select {
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; color: var(--ink); font-family: 'DM Sans', sans-serif;
+  font-size: .95rem; transition: border-color .2s, box-shadow .2s; width: 100%;
+  -webkit-appearance: none;
+}
+.fg input:focus, .fg textarea:focus, .fg select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,255,.1); }
+.fg input::placeholder, .fg textarea::placeholder { color: var(--ink3); }
+.fg textarea { resize: vertical; min-height: 100px; }
+.fg select option { background: #fff; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* CHECKBOX GRID */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.check-item { position: relative; }
+.check-item input[type="checkbox"] { position: absolute; opacity: 0; width: 0; }
+.check-item label {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; cursor: pointer; font-size: .85rem; font-weight: 500;
+  transition: all .15s; user-select: none;
+}
+.check-item label:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+.check-item input:checked + label { border-color: var(--blue); background: var(--blue-light); color: var(--blue); font-weight: 600; }
+.check-box { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.check-item input:checked + label .check-box { background: var(--blue); border-color: var(--blue); }
+.check-item input:checked + label .check-box::after { content: '✓'; color: #fff; font-size: .65rem; font-weight: 700; }
+
+/* RADIO GROUP */
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-group.horizontal { flex-direction: row; flex-wrap: wrap; }
+.radio-item { position: relative; }
+.radio-item input[type="radio"] { position: absolute; opacity: 0; width: 0; }
+.radio-item label {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 12px 16px; cursor: pointer; font-size: .88rem; font-weight: 500;
+  transition: all .15s; user-select: none;
+}
+.radio-item label:hover { border-color: var(--blue-mid); }
+.radio-item input:checked + label { border-color: var(--blue); background: var(--blue-light); color: var(--blue); font-weight: 600; }
+.radio-dot { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0; transition: all .15s; }
+.radio-item input:checked + label .radio-dot { border: 4px solid var(--blue); }
+
+/* COLOR PICKER ROW */
+.color-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.color-row label { font-size: .85rem; font-weight: 600; min-width: 120px; }
+.color-row input[type="color"] { width: 44px; height: 38px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; padding: 3px; background: var(--bg); }
+.color-row .color-hex { flex: 1; }
+
+/* STYLE CARDS */
+.style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.style-card { position: relative; }
+.style-card input { position: absolute; opacity: 0; width: 0; }
+.style-card label { display: block; border: 2px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all .15s; }
+.style-card input:checked + label { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,255,.15); }
+.style-preview { height: 80px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+.style-name { padding: 8px 10px; font-size: .78rem; font-weight: 600; text-align: center; background: var(--bg); border-top: 1px solid var(--border); }
+.style-card input:checked + label .style-name { background: var(--blue-light); color: var(--blue); }
+
+/* UPLOAD ZONE */
+.upload-zone { border: 2px dashed var(--border); border-radius: var(--radius); padding: 32px; text-align: center; cursor: pointer; transition: all .2s; background: var(--bg); position: relative; }
+.upload-zone:hover { border-color: var(--blue); background: var(--blue-light); }
+.upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.upload-icon { font-size: 2rem; margin-bottom: 8px; }
+.upload-zone p { font-size: .85rem; color: var(--ink2); }
+.upload-zone strong { color: var(--blue); }
+.file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.file-item { background: var(--blue-light); border: 1px solid var(--blue-mid); border-radius: 8px; padding: 8px 12px; font-size: .8rem; color: var(--blue); display: flex; align-items: center; gap: 8px; }
+
+/* TIME INPUTS */
+.hours-grid { display: grid; grid-template-columns: 120px 1fr 1fr auto; gap: 10px; align-items: center; margin-bottom: 8px; }
+.hours-grid .day-label { font-size: .85rem; font-weight: 600; }
+.hours-closed { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--ink3); }
+
+/* NAVIGATION */
+.nav-btns { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; }
+.btn-back { background: transparent; border: 1.5px solid var(--border); color: var(--ink2); border-radius: 10px; padding: 13px 24px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .95rem; cursor: pointer; transition: all .2s; }
+.btn-back:hover { border-color: var(--ink2); color: var(--ink); }
+.btn-next { background: var(--blue); color: #fff; border: none; border-radius: 10px; padding: 13px 32px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .95rem; cursor: pointer; transition: opacity .2s; display: flex; align-items: center; gap: 8px; }
+.btn-next:hover { opacity: .85; }
+.btn-submit { background: #0d0f14; color: #fff; border: none; border-radius: 10px; padding: 15px 36px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity .2s; display: flex; align-items: center; gap: 10px; }
+.btn-submit:hover { opacity: .85; }
+
+/* SUCCESS */
+.success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; padding: 40px 20px; background: var(--bg); position: fixed; inset: 0; z-index: 999; }
+.success-screen.show { display: flex; }
+.success-icon { font-size: 4rem; margin-bottom: 20px; }
+.success-screen h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+.success-screen p { color: var(--ink2); font-size: 1rem; max-width: 480px; margin: 0 auto; }
+
+/* RANGE SLIDER */
+.range-wrap { display: flex; align-items: center; gap: 16px; }
+.range-wrap input[type="range"] { flex: 1; accent-color: var(--blue); }
+.range-val { font-size: .85rem; font-weight: 700; color: var(--blue); min-width: 40px; text-align: right; }
+
+/* INFO BOX */
+.info-box { background: var(--blue-light); border: 1px solid var(--blue-mid); border-radius: 10px; padding: 14px 16px; font-size: .85rem; color: #2a3a8a; margin-bottom: 20px; display: flex; gap: 10px; }
+.info-box::before { content: 'ℹ'; font-weight: 700; flex-shrink: 0; }
+
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .check-grid { grid-template-columns: 1fr 1fr; }
+  .hours-grid { grid-template-columns: 90px 1fr 1fr; }
+  .hours-grid .hours-closed { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Novo<span>.</span></div>
+  <div class="header-tag">Client Onboarding Form</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-inner" id="progressBar">
+    <div class="prog-step active" onclick="goTo(1)">
+      <div class="prog-dot"><span class="prog-num">1</span></div>
+      <div class="prog-label">Business</div>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" onclick="goTo(2)">
+      <div class="prog-dot"><span class="prog-num">2</span></div>
+      <div class="prog-label">Website Goal</div>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" onclick="goTo(3)">
+      <div class="prog-dot"><span class="prog-num">3</span></div>
+      <div class="prog-label">Design</div>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" onclick="goTo(4)">
+      <div class="prog-dot"><span class="prog-num">4</span></div>
+      <div class="prog-label">Pages & Content</div>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" onclick="goTo(5)">
+      <div class="prog-dot"><span class="prog-num">5</span></div>
+      <div class="prog-label">Assets</div>
+    </div>
+    <div class="prog-line"></div>
+    <div class="prog-step" onclick="goTo(6)">
+      <div class="prog-dot"><span class="prog-num">6</span></div>
+      <div class="prog-label">Final Details</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+<form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST" enctype="multipart/form-data">
+
+<!-- STEP 1: BUSINESS INFO -->
+<div class="step-panel active" id="step-1">
+  <div class="step-header">
+    <div class="step-num-label">Step 1 of 6</div>
+    <h1 class="step-title">Tell us about your business.</h1>
+    <p class="step-sub">The basics we need to understand who you are and what you do.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Business Details</div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Business Name *</label>
+        <input type="text" name="business_name" placeholder="e.g. Mike's Plumbing">
+      </div>
+      <div class="fg">
+        <label>Your Name *</label>
+        <input type="text" name="contact_name" placeholder="Your full name">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Email Address *</label>
+        <input type="email" name="email" placeholder="you@yourbusiness.co.nz">
+      </div>
+      <div class="fg">
+        <label>Phone Number</label>
+        <input type="tel" name="phone" placeholder="027 XXX XXXX">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Business Location *</label>
+        <input type="text" name="location" placeholder="e.g. Tauranga, Bay of Plenty">
+      </div>
+      <div class="fg">
+        <label>Service Area</label>
+        <input type="text" name="service_area" placeholder="e.g. All of Bay of Plenty">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Business Tagline / Slogan</label>
+      <div class="hint">If you have one. If not, leave blank and we'll suggest one.</div>
+      <input type="text" name="tagline" placeholder="e.g. Fast, reliable plumbing across Bay of Plenty">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">About Your Business</div>
+    <div class="fg">
+      <label>What does your business do? *</label>
+      <div class="hint">Describe your service in plain English, as if telling a friend.</div>
+      <textarea name="business_description" placeholder="e.g. We're a family-owned plumbing business that handles hot water systems, blocked drains, and leak repairs for homes and small businesses in Tauranga."></textarea>
+    </div>
+    <div class="fg">
+      <label>Who are your ideal customers? *</label>
+      <div class="hint">Age, type, situation — be specific.</div>
+      <textarea name="target_customers" placeholder="e.g. Homeowners aged 30-60 in the Bay of Plenty area who need reliable tradespeople and value fast response times." style="min-height:80px;"></textarea>
+    </div>
+    <div class="fg">
+      <label>What makes you different from competitors?</label>
+      <div class="hint">Why should someone choose you over someone else?</div>
+      <textarea name="unique_selling_point" placeholder="e.g. We respond within 2 hours, offer upfront pricing, and have 20+ years of experience." style="min-height:80px;"></textarea>
+    </div>
+    <div class="fg">
+      <label>Business Industry *</label>
+      <select name="industry">
+        <option value="">Select your industry</option>
+        <option>Trades (Plumbing, Electrical, Building, Roofing)</option>
+        <option>Restaurant / Cafe / Food and Beverage</option>
+        <option>Health and Fitness / Personal Training</option>
+        <option>Coaching / Consulting / Business Services</option>
+        <option>Beauty / Hair / Wellness</option>
+        <option>Retail / E-commerce</option>
+        <option>Real Estate / Property</option>
+        <option>Medical / Healthcare</option>
+        <option>Education / Tutoring</option>
+        <option>Hospitality / Accommodation</option>
+        <option>Events / Photography / Creative</option>
+        <option>Legal / Financial / Accounting</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Contact Information (for your website)</div>
+    <div class="form-row">
+      <div class="fg">
+        <label>Website Email to Display</label>
+        <input type="email" name="display_email" placeholder="hello@yourbusiness.co.nz">
+      </div>
+      <div class="fg">
+        <label>Website Phone to Display</label>
+        <input type="tel" name="display_phone" placeholder="027 XXX XXXX">
+      </div>
+    </div>
+    <div class="fg">
+      <label>Physical Address (if applicable)</label>
+      <input type="text" name="address" placeholder="123 Main Street, Tauranga 3110">
+    </div>
+    <div class="fg">
+      <label>Existing Social Media Links</label>
+      <div class="hint">Paste any links you want connected to the site.</div>
+      <input type="url" name="facebook" placeholder="Facebook URL" style="margin-bottom:8px;">
+      <input type="url" name="instagram" placeholder="Instagram URL" style="margin-bottom:8px;">
+      <input type="url" name="tiktok" placeholder="TikTok URL" style="margin-bottom:8px;">
+      <input type="url" name="google_maps" placeholder="Google Maps / Google Business URL">
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <div></div>
+    <button type="button" class="btn-next" onclick="next(1)">Next: Website Goal <span>→</span></button>
+  </div>
+</div>
+
+<!-- STEP 2: WEBSITE GOAL -->
+<div class="step-panel" id="step-2">
+  <div class="step-header">
+    <div class="step-num-label">Step 2 of 6</div>
+    <h1 class="step-title">What should your website achieve?</h1>
+    <p class="step-sub">This determines everything about how we structure and write the site.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Primary Goal</div>
+    <div class="fg">
+      <label>What should visitors do on your website? *</label>
+      <div class="hint">Select all that apply.</div>
+      <div class="check-grid">
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g1" value="Call us directly"><label for="g1"><div class="check-box"></div> Call us directly</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g2" value="Fill in a contact / enquiry form"><label for="g2"><div class="check-box"></div> Enquiry form</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g3" value="Book an appointment online"><label for="g3"><div class="check-box"></div> Book an appointment</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g4" value="Visit us in person"><label for="g4"><div class="check-box"></div> Visit us in person</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g5" value="Buy a product online"><label for="g5"><div class="check-box"></div> Buy a product online</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g6" value="Get a quote"><label for="g6"><div class="check-box"></div> Get a quote</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g7" value="Learn about our services"><label for="g7"><div class="check-box"></div> Learn about services</label></div>
+        <div class="check-item"><input type="checkbox" name="primary_goal[]" id="g8" value="Other"><label for="g8"><div class="check-box"></div> Other</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Existing Online Presence</div>
+    <div class="fg">
+      <label>Do you have an existing website?</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="existing_website" id="ew1" value="No"><label for="ew1"><div class="radio-dot"></div> No, starting fresh</label></div>
+        <div class="radio-item"><input type="radio" name="existing_website" id="ew2" value="Yes"><label for="ew2"><div class="radio-dot"></div> Yes, replacing it</label></div>
+        <div class="radio-item"><input type="radio" name="existing_website" id="ew3" value="Yes - keep some parts"><label for="ew3"><div class="radio-dot"></div> Yes, keep some parts</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Current website URL (if any)</label>
+      <input type="url" name="current_website" placeholder="https://yourbusiness.co.nz">
+    </div>
+    <div class="fg">
+      <label>What's NOT working about your current website / online presence?</label>
+      <textarea name="current_problems" placeholder="e.g. Looks outdated, doesn't show on Google, no contact form, hard to update..." style="min-height:80px;"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Inspiration</div>
+    <div class="fg">
+      <label>List 2-3 websites you like the look or feel of</label>
+      <div class="hint">Can be competitors or completely different industries — just sites that feel right to you.</div>
+      <input type="url" name="inspo_1" placeholder="https://example.com" style="margin-bottom:8px;">
+      <input type="url" name="inspo_2" placeholder="https://example.com" style="margin-bottom:8px;">
+      <input type="url" name="inspo_3" placeholder="https://example.com">
+    </div>
+    <div class="fg">
+      <label>What do you like about those sites?</label>
+      <textarea name="inspo_notes" placeholder="e.g. Clean layout, dark colours, big photos, simple navigation..." style="min-height:80px;"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button type="button" class="btn-back" onclick="prev(2)">← Back</button>
+    <button type="button" class="btn-next" onclick="next(2)">Next: Design <span>→</span></button>
+  </div>
+</div>
+
+<!-- STEP 3: DESIGN -->
+<div class="step-panel" id="step-3">
+  <div class="step-header">
+    <div class="step-num-label">Step 3 of 6</div>
+    <h1 class="step-title">Look and feel.</h1>
+    <p class="step-sub">Help us nail the visual direction before we write a single line of code.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Overall Style</div>
+    <div class="fg">
+      <label>Which style fits your brand best? *</label>
+      <div class="style-grid">
+        <div class="style-card">
+          <input type="radio" name="style" id="s1" value="Clean & Minimal">
+          <label for="s1">
+            <div class="style-preview" style="background:#f8f8f8;">◻ ◻ ◻</div>
+            <div class="style-name">Clean & Minimal</div>
+          </label>
+        </div>
+        <div class="style-card">
+          <input type="radio" name="style" id="s2" value="Bold & Modern">
+          <label for="s2">
+            <div class="style-preview" style="background:#0d0f14;color:#fff;font-weight:900;font-size:1.6rem;">▮▮</div>
+            <div class="style-name">Bold & Modern</div>
+          </label>
+        </div>
+        <div class="style-card">
+          <input type="radio" name="style" id="s3" value="Warm & Friendly">
+          <label for="s3">
+            <div class="style-preview" style="background:#fff8f0;">☀ ☀</div>
+            <div class="style-name">Warm & Friendly</div>
+          </label>
+        </div>
+        <div class="style-card">
+          <input type="radio" name="style" id="s4" value="Professional & Corporate">
+          <label for="s4">
+            <div class="style-preview" style="background:#eef2ff;">▦ ▦</div>
+            <div class="style-name">Professional & Corporate</div>
+          </label>
+        </div>
+        <div class="style-card">
+          <input type="radio" name="style" id="s5" value="Luxury & Premium">
+          <label for="s5">
+            <div class="style-preview" style="background:#111;color:#c9a84c;font-size:1.4rem;">◈ ◈</div>
+            <div class="style-name">Luxury & Premium</div>
+          </label>
+        </div>
+        <div class="style-card">
+          <input type="radio" name="style" id="s6" value="Fun & Playful">
+          <label for="s6">
+            <div class="style-preview" style="background:#fff0fa;">★ ◉ ★</div>
+            <div class="style-name">Fun & Playful</div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Colour Preferences</div>
+    <div class="info-box">Pick your preferred colours below. If you already have brand colours, enter the exact hex codes. If not, just pick something close — we'll refine it.</div>
+
+    <div class="color-row">
+      <label>Primary Colour</label>
+      <input type="color" name="color_primary" value="#1a56ff">
+      <div class="fg color-hex" style="margin:0;">
+        <input type="text" name="color_primary_hex" placeholder="#1a56ff" style="font-size:.85rem;">
+      </div>
+    </div>
+    <div class="color-row">
+      <label>Secondary Colour</label>
+      <input type="color" name="color_secondary" value="#0d0f14">
+      <div class="fg color-hex" style="margin:0;">
+        <input type="text" name="color_secondary_hex" placeholder="#0d0f14" style="font-size:.85rem;">
+      </div>
+    </div>
+    <div class="color-row">
+      <label>Accent / Button Colour</label>
+      <input type="color" name="color_accent" value="#ffffff">
+      <div class="fg color-hex" style="margin:0;">
+        <input type="text" name="color_accent_hex" placeholder="#ffffff" style="font-size:.85rem;">
+      </div>
+    </div>
+
+    <div class="fg" style="margin-top:20px;">
+      <label>Any colours to AVOID?</label>
+      <input type="text" name="colors_avoid" placeholder="e.g. No red, avoid orange tones">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tone of Voice</div>
+    <div class="fg">
+      <label>How should the website text sound?</label>
+      <div class="check-grid">
+        <div class="check-item"><input type="checkbox" id="t1" name="tone" value="Professional"><label for="t1"><div class="check-box"></div> Professional</label></div>
+        <div class="check-item"><input type="checkbox" id="t2" name="tone" value="Friendly"><label for="t2"><div class="check-box"></div> Friendly</label></div>
+        <div class="check-item"><input type="checkbox" id="t3" name="tone" value="Confident"><label for="t3"><div class="check-box"></div> Confident</label></div>
+        <div class="check-item"><input type="checkbox" id="t4" name="tone" value="Casual / Relaxed"><label for="t4"><div class="check-box"></div> Casual / Relaxed</label></div>
+        <div class="check-item"><input type="checkbox" id="t5" name="tone" value="Premium / Authoritative"><label for="t5"><div class="check-box"></div> Premium / Authoritative</label></div>
+        <div class="check-item"><input type="checkbox" id="t6" name="tone" value="Fun / Energetic"><label for="t6"><div class="check-box"></div> Fun / Energetic</label></div>
+        <div class="check-item"><input type="checkbox" id="t7" name="tone" value="Warm / Personal"><label for="t7"><div class="check-box"></div> Warm / Personal</label></div>
+        <div class="check-item"><input type="checkbox" id="t8" name="tone" value="No-nonsense / Direct"><label for="t8"><div class="check-box"></div> No-nonsense / Direct</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Layout Preferences</div>
+    <div class="fg">
+      <label>Background preference</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="bg_pref" id="bg1" value="White / Light"><label for="bg1"><div class="radio-dot"></div> White / Light</label></div>
+        <div class="radio-item"><input type="radio" name="bg_pref" id="bg2" value="Dark / Black"><label for="bg2"><div class="radio-dot"></div> Dark / Black</label></div>
+        <div class="radio-item"><input type="radio" name="bg_pref" id="bg3" value="Mix of both"><label for="bg3"><div class="radio-dot"></div> Mix of both</label></div>
+        <div class="radio-item"><input type="radio" name="bg_pref" id="bg4" value="No preference"><label for="bg4"><div class="radio-dot"></div> No preference</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Image style preference</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="img_pref" id="ip1" value="Lots of large photos"><label for="ip1"><div class="radio-dot"></div> Lots of large photos</label></div>
+        <div class="radio-item"><input type="radio" name="img_pref" id="ip2" value="Minimal imagery, mostly text"><label for="ip2"><div class="radio-dot"></div> Minimal imagery</label></div>
+        <div class="radio-item"><input type="radio" name="img_pref" id="ip3" value="Balance of both"><label for="ip3"><div class="radio-dot"></div> Balance of both</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button type="button" class="btn-back" onclick="prev(3)">← Back</button>
+    <button type="button" class="btn-next" onclick="next(3)">Next: Pages & Content <span>→</span></button>
+  </div>
+</div>
+
+<!-- STEP 4: PAGES & CONTENT -->
+<div class="step-panel" id="step-4">
+  <div class="step-header">
+    <div class="step-num-label">Step 4 of 6</div>
+    <h1 class="step-title">Pages and content.</h1>
+    <p class="step-sub">Tell us exactly what you need on the site. Tick everything that applies.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Pages Needed</div>
+    <div class="fg">
+      <label>Which pages do you want?</label>
+      <div class="check-grid">
+        <div class="check-item"><input type="checkbox" id="p1" name="pages" value="Home" checked><label for="p1"><div class="check-box"></div> Home</label></div>
+        <div class="check-item"><input type="checkbox" id="p2" name="pages" value="About Us"><label for="p2"><div class="check-box"></div> About Us</label></div>
+        <div class="check-item"><input type="checkbox" id="p3" name="pages" value="Services"><label for="p3"><div class="check-box"></div> Services</label></div>
+        <div class="check-item"><input type="checkbox" id="p4" name="pages" value="Menu"><label for="p4"><div class="check-box"></div> Menu</label></div>
+        <div class="check-item"><input type="checkbox" id="p5" name="pages" value="Pricing / Packages"><label for="p5"><div class="check-box"></div> Pricing / Packages</label></div>
+        <div class="check-item"><input type="checkbox" id="p6" name="pages" value="Portfolio / Gallery"><label for="p6"><div class="check-box"></div> Portfolio / Gallery</label></div>
+        <div class="check-item"><input type="checkbox" id="p7" name="pages" value="Testimonials / Reviews"><label for="p7"><div class="check-box"></div> Testimonials / Reviews</label></div>
+        <div class="check-item"><input type="checkbox" id="p8" name="pages" value="Team / Staff"><label for="p8"><div class="check-box"></div> Team / Staff</label></div>
+        <div class="check-item"><input type="checkbox" id="p9" name="pages" value="Blog / News"><label for="p9"><div class="check-box"></div> Blog / News</label></div>
+        <div class="check-item"><input type="checkbox" id="p10" name="pages" value="FAQ"><label for="p10"><div class="check-box"></div> FAQ</label></div>
+        <div class="check-item"><input type="checkbox" id="p11" name="pages" value="Contact"><label for="p11"><div class="check-box"></div> Contact</label></div>
+        <div class="check-item"><input type="checkbox" id="p12" name="pages" value="Booking / Reservations"><label for="p12"><div class="check-box"></div> Booking / Reservations</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Any other pages not listed?</label>
+      <input type="text" name="other_pages" placeholder="e.g. Careers, Partner page, Events...">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Features and Sections</div>
+    <div class="fg">
+      <label>Which features do you need on your site?</label>
+      <div class="check-grid">
+        <div class="check-item"><input type="checkbox" id="f1" name="features" value="Contact Form"><label for="f1"><div class="check-box"></div> Contact Form</label></div>
+        <div class="check-item"><input type="checkbox" id="f2" name="features" value="Online Booking"><label for="f2"><div class="check-box"></div> Online Booking</label></div>
+        <div class="check-item"><input type="checkbox" id="f3" name="features" value="Opening Hours"><label for="f3"><div class="check-box"></div> Opening Hours</label></div>
+        <div class="check-item"><input type="checkbox" id="f4" name="features" value="Google Maps Embed"><label for="f4"><div class="check-box"></div> Google Maps Embed</label></div>
+        <div class="check-item"><input type="checkbox" id="f5" name="features" value="Click-to-Call Button"><label for="f5"><div class="check-box"></div> Click-to-Call Button</label></div>
+        <div class="check-item"><input type="checkbox" id="f6" name="features" value="WhatsApp / Direct Message Button"><label for="f6"><div class="check-box"></div> WhatsApp Button</label></div>
+        <div class="check-item"><input type="checkbox" id="f7" name="features" value="Photo Gallery / Slider"><label for="f7"><div class="check-box"></div> Photo Gallery</label></div>
+        <div class="check-item"><input type="checkbox" id="f8" name="features" value="Video Embed (YouTube / Vimeo)"><label for="f8"><div class="check-box"></div> Video Embed</label></div>
+        <div class="check-item"><input type="checkbox" id="f9" name="features" value="Social Media Feed"><label for="f9"><div class="check-box"></div> Social Media Feed</label></div>
+        <div class="check-item"><input type="checkbox" id="f10" name="features" value="Customer Reviews / Google Reviews"><label for="f10"><div class="check-box"></div> Google Reviews</label></div>
+        <div class="check-item"><input type="checkbox" id="f11" name="features" value="Newsletter Signup"><label for="f11"><div class="check-box"></div> Newsletter Signup</label></div>
+        <div class="check-item"><input type="checkbox" id="f12" name="features" value="Online Shop / E-commerce"><label for="f12"><div class="check-box"></div> Online Shop</label></div>
+        <div class="check-item"><input type="checkbox" id="f13" name="features" value="Menu (Food / Drinks)"><label for="f13"><div class="check-box"></div> Food / Drinks Menu</label></div>
+        <div class="check-item"><input type="checkbox" id="f14" name="features" value="Pricing Table"><label for="f14"><div class="check-box"></div> Pricing Table</label></div>
+        <div class="check-item"><input type="checkbox" id="f15" name="features" value="Live Chat Widget"><label for="f15"><div class="check-box"></div> Live Chat Widget</label></div>
+        <div class="check-item"><input type="checkbox" id="f16" name="features" value="Popup / Lead Capture"><label for="f16"><div class="check-box"></div> Popup / Lead Capture</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Opening Hours (if applicable)</div>
+    <div class="hint" style="margin-bottom:16px;font-size:.8rem;color:var(--ink3);">Fill in your opening hours if you want them displayed on the site. Leave blank if not applicable.</div>
+    <div id="hoursGrid">
+      <div class="hours-grid"><div class="day-label">Monday</div><input type="time" name="mon_open" value="08:00"><input type="time" name="mon_close" value="17:00"><div class="hours-closed"><input type="checkbox" id="mc" name="mon_closed" value="Closed"><label for="mc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Tuesday</div><input type="time" name="tue_open" value="08:00"><input type="time" name="tue_close" value="17:00"><div class="hours-closed"><input type="checkbox" id="tuc" name="tue_closed" value="Closed"><label for="tuc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Wednesday</div><input type="time" name="wed_open" value="08:00"><input type="time" name="wed_close" value="17:00"><div class="hours-closed"><input type="checkbox" id="wc" name="wed_closed" value="Closed"><label for="wc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Thursday</div><input type="time" name="thu_open" value="08:00"><input type="time" name="thu_close" value="17:00"><div class="hours-closed"><input type="checkbox" id="thc" name="thu_closed" value="Closed"><label for="thc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Friday</div><input type="time" name="fri_open" value="08:00"><input type="time" name="fri_close" value="17:00"><div class="hours-closed"><input type="checkbox" id="fc" name="fri_closed" value="Closed"><label for="fc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Saturday</div><input type="time" name="sat_open" value="09:00"><input type="time" name="sat_close" value="14:00"><div class="hours-closed"><input type="checkbox" id="sc" name="sat_closed" value="Closed"><label for="sc">Closed</label></div></div>
+      <div class="hours-grid"><div class="day-label">Sunday</div><input type="time" name="sun_open"><input type="time" name="sun_close"><div class="hours-closed"><input type="checkbox" id="suc" name="sun_closed" value="Closed" checked><label for="suc">Closed</label></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Services / Products List</div>
+    <div class="fg">
+      <label>List your main services or products</label>
+      <div class="hint">One per line. Include prices if you want them shown.</div>
+      <textarea name="services_list" placeholder="Hot water system installation&#10;Blocked drain clearing - from $150&#10;Leak detection and repair&#10;Bathroom renovations&#10;Gas fitting" style="min-height:140px;"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button type="button" class="btn-back" onclick="prev(4)">← Back</button>
+    <button type="button" class="btn-next" onclick="next(4)">Next: Assets <span>→</span></button>
+  </div>
+</div>
+
+<!-- STEP 5: ASSETS -->
+<div class="step-panel" id="step-5">
+  <div class="step-header">
+    <div class="step-num-label">Step 5 of 6</div>
+    <h1 class="step-title">Your files and assets.</h1>
+    <p class="step-sub">We need your logo, photos, and any other files. Here's how to send them in 2 minutes.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">How to send your files</div>
+    <div class="info-box">We use WeTransfer to receive your files — it's free, takes 2 minutes, and works on any device. Follow the steps below, then paste your link at the bottom of this page.</div>
+
+    <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="width:36px; height:36px; background:var(--blue-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; color:var(--blue); flex-shrink:0;">1</div>
+        <div>
+          <div style="font-weight:600; font-size:.9rem; margin-bottom:4px;">Go to wetransfer.com</div>
+          <div style="font-size:.82rem; color:var(--ink2);">Click "Transfer" — no account needed.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="width:36px; height:36px; background:var(--blue-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; color:var(--blue); flex-shrink:0;">2</div>
+        <div>
+          <div style="font-weight:600; font-size:.9rem; margin-bottom:4px;">Upload your files</div>
+          <div style="font-size:.82rem; color:var(--ink2);">Logo (PNG/SVG preferred), photos of your business, menu PDF, certificates — anything relevant.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="width:36px; height:36px; background:var(--blue-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; color:var(--blue); flex-shrink:0;">3</div>
+        <div>
+          <div style="font-weight:600; font-size:.9rem; margin-bottom:4px;">Get your link</div>
+          <div style="font-size:.82rem; color:var(--ink2);">Click "Get a link" instead of entering an email. Copy the link WeTransfer gives you.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="width:36px; height:36px; background:var(--blue-light); border-radius:10px; display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; color:var(--blue); flex-shrink:0;">4</div>
+        <div>
+          <div style="font-weight:600; font-size:.9rem; margin-bottom:4px;">Paste the link below</div>
+          <div style="font-size:.82rem; color:var(--ink2);">That's it — we'll download everything from there.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fg">
+      <label>Paste your WeTransfer link here</label>
+      <input type="url" name="wetransfer_link" placeholder="https://we.tl/t-xxxxxxxxxx">
+    </div>
+    <div class="fg">
+      <label>Or paste a Google Drive / Dropbox link</label>
+      <div class="hint">Make sure the link is set to "Anyone with the link can view".</div>
+      <input type="url" name="drive_link" placeholder="https://drive.google.com/...">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">What to include</div>
+    <div class="check-grid">
+      <div class="check-item"><input type="checkbox" id="a1" name="assets_included" value="Logo"><label for="a1"><div class="check-box"></div> Logo</label></div>
+      <div class="check-item"><input type="checkbox" id="a2" name="assets_included" value="Photos of business"><label for="a2"><div class="check-box"></div> Photos of business</label></div>
+      <div class="check-item"><input type="checkbox" id="a3" name="assets_included" value="Team photos"><label for="a3"><div class="check-box"></div> Team photos</label></div>
+      <div class="check-item"><input type="checkbox" id="a4" name="assets_included" value="Product photos"><label for="a4"><div class="check-box"></div> Product photos</label></div>
+      <div class="check-item"><input type="checkbox" id="a5" name="assets_included" value="Menu PDF"><label for="a5"><div class="check-box"></div> Menu PDF</label></div>
+      <div class="check-item"><input type="checkbox" id="a6" name="assets_included" value="Certificates / Awards"><label for="a6"><div class="check-box"></div> Certificates / Awards</label></div>
+      <div class="check-item"><input type="checkbox" id="a7" name="assets_included" value="Brand guidelines"><label for="a7"><div class="check-box"></div> Brand guidelines</label></div>
+      <div class="check-item"><input type="checkbox" id="a8" name="assets_included" value="Other documents"><label for="a8"><div class="check-box"></div> Other documents</label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">No files yet?</div>
+    <div class="fg">
+      <label>Describe what you have and what you don't</label>
+      <div class="hint">We can work with what you have and advise on what's worth getting before we start.</div>
+      <textarea name="assets_notes" placeholder="e.g. I have a logo in JPG format, a few iPhone photos of the shopfront, but no professional photos yet. No brand guidelines." style="min-height:90px;"></textarea>
+    </div>
+    <div class="fg">
+      <label>Do you have brand guidelines / style guide?</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="has_brand_guide" id="bg_y" value="Yes"><label for="bg_y"><div class="radio-dot"></div> Yes — included in files</label></div>
+        <div class="radio-item"><input type="radio" name="has_brand_guide" id="bg_n" value="No"><label for="bg_n"><div class="radio-dot"></div> No</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button type="button" class="btn-back" onclick="prev(5)">← Back</button>
+    <button type="button" class="btn-next" onclick="next(5)">Next: Final Details <span>→</span></button>
+  </div>
+</div>
+
+<!-- STEP 6: FINAL DETAILS -->
+<div class="step-panel" id="step-6">
+  <div class="step-header">
+    <div class="step-num-label">Step 6 of 6</div>
+    <h1 class="step-title">Almost done.</h1>
+    <p class="step-sub">A few final details and you're set. We'll take it from here.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Domain and Hosting</div>
+    <div class="fg">
+      <label>Do you have a domain name already?</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="has_domain" id="d1" value="Yes"><label for="d1"><div class="radio-dot"></div> Yes</label></div>
+        <div class="radio-item"><input type="radio" name="has_domain" id="d2" value="No - need one"><label for="d2"><div class="radio-dot"></div> No, I need one</label></div>
+        <div class="radio-item"><input type="radio" name="has_domain" id="d3" value="Not sure"><label for="d3"><div class="radio-dot"></div> Not sure</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Domain name (if you have one)</label>
+      <input type="text" name="domain_name" placeholder="yourbusiness.co.nz">
+    </div>
+    <div class="fg">
+      <label>Preferred domain (if you need one)</label>
+      <input type="text" name="preferred_domain" placeholder="e.g. mikesplumbing.co.nz">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Timeline and Budget</div>
+    <div class="fg">
+      <label>When do you need the website live?</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="timeline" id="tl1" value="ASAP"><label for="tl1"><div class="radio-dot"></div> ASAP</label></div>
+        <div class="radio-item"><input type="radio" name="timeline" id="tl2" value="Within 2 weeks"><label for="tl2"><div class="radio-dot"></div> Within 2 weeks</label></div>
+        <div class="radio-item"><input type="radio" name="timeline" id="tl3" value="Within a month"><label for="tl3"><div class="radio-dot"></div> Within a month</label></div>
+        <div class="radio-item"><input type="radio" name="timeline" id="tl4" value="No rush"><label for="tl4"><div class="radio-dot"></div> No rush</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Which package are you interested in?</label>
+      <div class="radio-group">
+        <div class="radio-item"><input type="radio" name="package" id="pk1" value="Starter - $597 NZD"><label for="pk1"><div class="radio-dot"></div> Starter — $597 NZD (1-page site, 7 days)</label></div>
+        <div class="radio-item"><input type="radio" name="package" id="pk2" value="Growth - $1,397 NZD"><label for="pk2"><div class="radio-dot"></div> Growth — $1,397 NZD (up to 5 pages, 10 days)</label></div>
+        <div class="radio-item"><input type="radio" name="package" id="pk3" value="Premium - $2,997 NZD"><label for="pk3"><div class="radio-dot"></div> Premium — $2,997 NZD (full custom, 14 days)</label></div>
+        <div class="radio-item"><input type="radio" name="package" id="pk4" value="Not sure yet"><label for="pk4"><div class="radio-dot"></div> Not sure yet — help me decide</label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SEO and Google</div>
+    <div class="fg">
+      <label>Do you have a Google Business Profile?</label>
+      <div class="radio-group horizontal">
+        <div class="radio-item"><input type="radio" name="google_business" id="gb1" value="Yes"><label for="gb1"><div class="radio-dot"></div> Yes</label></div>
+        <div class="radio-item"><input type="radio" name="google_business" id="gb2" value="No"><label for="gb2"><div class="radio-dot"></div> No</label></div>
+        <div class="radio-item"><input type="radio" name="google_business" id="gb3" value="Not sure"><label for="gb3"><div class="radio-dot"></div> Not sure</label></div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>What keywords should people find you by?</label>
+      <div class="hint">How would a customer search for your business on Google?</div>
+      <input type="text" name="seo_keywords" placeholder="e.g. plumber Tauranga, blocked drain Bay of Plenty, emergency plumbing NZ">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anything Else</div>
+    <div class="fg">
+      <label>Is there anything specific you MUST have on the website?</label>
+      <textarea name="must_haves" placeholder="e.g. We must show our certifications, we want a live chat, we need a PDF download button for our price list..." style="min-height:80px;"></textarea>
+    </div>
+    <div class="fg">
+      <label>Is there anything you definitely DON'T want?</label>
+      <textarea name="dont_wants" placeholder="e.g. No popups, don't use stock photos, no dark background..." style="min-height:80px;"></textarea>
+    </div>
+    <div class="fg">
+      <label>Anything else we should know?</label>
+      <textarea name="other_notes" placeholder="Any other context, ideas, or notes for us..." style="min-height:80px;"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-btns">
+    <button type="button" class="btn-back" onclick="prev(6)">← Back</button>
+    <button type="submit" class="btn-submit">Submit Onboarding <span>→</span></button>
+  </div>
+</div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div style="max-width:520px;width:100%;">
+    <div style="background:#fff;border-radius:20px;padding:48px 40px;box-shadow:0 8px 48px rgba(0,0,0,.1);text-align:center;">
+      <div style="width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:2rem;">✓</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:-.5px;margin-bottom:12px;color:#0a0a0a;">Brief received!</h2>
+      <p style="color:#555;font-size:1rem;line-height:1.7;margin-bottom:32px;">Thanks for filling out your Novo brief. We've received everything and will get back to you within <strong>24 hours</strong> with a full proposal and fixed price.</p>
+      <div style="background:#f7f8fc;border:1px solid #e2e4ea;border-radius:12px;padding:20px;text-align:left;margin-bottom:28px;">
+        <div style="font-size:.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#999;margin-bottom:12px;">What happens next</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">1</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">We review your brief and prepare a custom proposal tailored to your business.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">2</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">You receive a clear scope, timeline, and fixed price — no surprises.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:24px;height:24px;background:#1a56ff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">3</div>
+            <div style="font-size:.9rem;color:#333;line-height:1.5;">Once you approve the proposal and pay the 50% deposit, we get to work.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:.85rem;color:#999;">Questions? Email us at <a href="mailto:contact@novowebpages.com" style="color:#1a56ff;font-weight:600;">contact@novowebpages.com</a></div>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="https://novowebpages.com" style="color:#999;font-size:.82rem;text-decoration:none;">← Back to novowebpages.com</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var current = 1;
+var total = 6;
+
+function goTo(n) {
+  document.getElementById('step-' + current).classList.remove('active');
+  updateProgress(current, n);
+  current = n;
+  document.getElementById('step-' + current).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function next(n) { if (n < total) goTo(n + 1); }
+function prev(n) { if (n > 1) goTo(n - 1); }
+
+function updateProgress(from, to) {
+  var steps = document.querySelectorAll('.prog-step');
+  var lines = document.querySelectorAll('.prog-line');
+  steps.forEach(function(s, i) {
+    s.classList.remove('active', 'done');
+    if (i + 1 < to) s.classList.add('done');
+    if (i + 1 === to) s.classList.add('active');
+  });
+  lines.forEach(function(l, i) {
+    l.style.background = (i + 1 < to) ? '#22c55e' : 'var(--border)';
+  });
+}
+
+function showFiles(input, targetId) {
+  var list = document.getElementById(targetId);
+  list.innerHTML = '';
+  Array.from(input.files).forEach(function(f) {
+    var item = document.createElement('div');
+    item.className = 'file-item';
+    item.textContent = f.name + ' (' + (f.size / 1024).toFixed(0) + ' KB)';
+    list.appendChild(item);
+  });
+}
+
+var form = document.getElementById('onboardingForm');
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Validate required fields
+  var errors = [];
+  var requiredFields = [
+    { name: 'business_name', label: 'Business Name', step: 1 },
+    { name: 'contact_name', label: 'Your Name', step: 1 },
+    { name: 'email', label: 'Email Address', step: 1 },
+    { name: 'business_description', label: 'Business Description', step: 1 },
+    { name: 'industry', label: 'Industry', step: 1 },
+    { name: 'primary_goal[]', label: 'Website Goals', step: 2, type: 'checkbox' }
+  ];
+
+  var firstErrorStep = null;
+  requiredFields.forEach(function(f) {
+    var val;
+    if (f.type === 'checkbox') {
+      val = form.querySelector('[name="' + f.name + '"]:checked');
+    } else {
+      var el = form.querySelector('[name="' + f.name + '"]');
+      val = el ? (el.type === 'radio' ? form.querySelector('[name="' + f.name + '"]:checked') : el.value.trim()) : null;
+    }
+    if (!val) {
+      errors.push({ label: f.label, step: f.step });
+      if (!firstErrorStep) firstErrorStep = f.step;
+    }
+  });
+
+  if (errors.length > 0) {
+    goTo(firstErrorStep);
+    var existingError = document.getElementById('validationError');
+    if (existingError) existingError.remove();
+    var errorDiv = document.createElement('div');
+    errorDiv.id = 'validationError';
+    errorDiv.style.cssText = 'background:#fff0f0;border:1px solid #ffaaaa;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#c00;';
+    errorDiv.innerHTML = '<strong>Please fill in the following fields:</strong><ul style="margin-top:8px;padding-left:18px;">' +
+      errors.filter(function(err) { return err.step === firstErrorStep; }).map(function(err) { return '<li>' + err.label + '</li>'; }).join('') +
+      '</ul>';
+    document.getElementById('step-' + firstErrorStep).prepend(errorDiv);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  // Show loading state on button
+  var btn = form.querySelector('.btn-submit');
+  btn.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;"></span> Sending...';
+  btn.disabled = true;
+  btn.style.opacity = '0.8';
+
+  // Add spinner animation if not already added
+  if (!document.getElementById('spinStyle')) {
+    var spinStyle = document.createElement('style');
+    spinStyle.id = 'spinStyle';
+    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(spinStyle);
+  }
+
+  var data = new FormData(form);
+
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(res) {
+    if (res.ok) {
+      document.querySelector('.header').style.display = 'none';
+      document.querySelector('.progress-wrap').style.display = 'none';
+      document.querySelector('.main').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      return res.json().then(function(json) {
+        btn.innerHTML = '⚠ Something went wrong — try again';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+      });
+    }
+  })
+  .catch(function(err) {
+    btn.innerHTML = '⚠ Connection error — try again';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+  });
+});
+</script>
+
+<!-- EMAIL TEMPLATE PAGE - only visible via #email-template anchor -->
+<div id="email-template-page" style="display:none; max-width:680px; margin:0 auto; padding:60px 5%;">
+  <div style="background:#0d0f14; border-radius:16px; padding:32px; margin-bottom:24px;">
+    <div style="font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:#fff; margin-bottom:4px;">Novo<span style="color:#1a56ff;">.</span></div>
+    <div style="font-size:.8rem; color:rgba(255,255,255,.4);">Reply Email Template</div>
+  </div>
+
+  <div style="background:#fff; border:1px solid #e2e4ea; border-radius:16px; padding:32px; box-shadow:0 2px 16px rgba(0,0,0,.07);">
+    <div style="font-size:.72rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#1a56ff; margin-bottom:16px;">How to use</div>
+    <p style="font-size:.88rem; color:#555; line-height:1.7; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid #e2e4ea;">
+      When a new submission arrives in your Novo Inbox, hit <strong>Reply</strong>, copy the text below, replace <strong>[NAME]</strong> with their name, and replace <strong>[LINK]</strong> with the onboarding form URL. Done.
+    </p>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:.75rem; font-weight:700; color:#999; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Subject</div>
+      <div id="emailSubject" style="background:#f7f8fc; border:1px solid #e2e4ea; border-radius:10px; padding:14px 16px; font-size:.95rem; font-family:'DM Sans',sans-serif;">Let's get started — your Novo brief</div>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:.75rem; font-weight:700; color:#999; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Body</div>
+      <div id="emailBody" style="background:#f7f8fc; border:1px solid #e2e4ea; border-radius:10px; padding:20px; font-size:.92rem; font-family:'DM Sans',sans-serif; line-height:1.8; white-space:pre-wrap;">Hi [NAME],
+
+Thanks for reaching out — really glad you did.
+
+To make sure we build exactly what your business needs, I've put together a short onboarding brief. It covers everything from design preferences to pages, content, and lets you upload your logo and photos directly.
+
+Takes about 10 minutes and means I can get straight to work without any back-and-forth.
+
+→ Fill in your brief here: [LINK]
+
+Once I receive it I'll come back to you within 24 hours with a full proposal and fixed price.
+
+Looking forward to working with you.
+
+Moritz
+Novo – novo-webpages.com
+<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1929e9f85909285b19f9e879e8694938190969482df929e9c">[email&#160;protected]</a></div>
+    </div>
+
+    <button onclick="copyEmail()" style="background:#1a56ff; color:#fff; border:none; border-radius:10px; padding:13px 28px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:.95rem; cursor:pointer; width:100%; transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+      Copy Email Body
+    </button>
+    <div id="copyConfirm" style="display:none; text-align:center; margin-top:12px; font-size:.85rem; color:#22c55e; font-weight:600;">✓ Copied to clipboard</div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Show email template page if URL hash is #email-template
+if (window.location.hash === '#email-template') {
+  document.querySelector('.header').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.querySelector('.main').style.display = 'none';
+  document.getElementById('email-template-page').style.display = 'block';
+}
+
+function copyEmail() {
+  var text = document.getElementById('emailBody').innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    document.getElementById('copyConfirm').style.display = 'block';
+    setTimeout(function() { document.getElementById('copyConfirm').style.display = 'none'; }, 2500);
+  });
+}
+</script>
+</body>
+</html>

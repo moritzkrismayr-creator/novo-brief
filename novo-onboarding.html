@@ -970,49 +970,7 @@ function showFiles(input, targetId) {
 
 var form = document.getElementById('onboardingForm');
 form.addEventListener('submit', function(e) {
-  // Validate required fields
-  var errors = [];
-  var requiredFields = [
-    { name: 'business_name', label: 'Business Name', step: 1 },
-    { name: 'contact_name', label: 'Your Name', step: 1 },
-    { name: 'email', label: 'Email Address', step: 1 },
-    { name: 'business_description', label: 'Business Description', step: 1 },
-    { name: 'industry', label: 'Industry', step: 1 },
-    { name: 'primary_goal[]', label: 'Website Goals', step: 2, type: 'checkbox' }
-  ];
-
-  var firstErrorStep = null;
-  requiredFields.forEach(function(f) {
-    var val;
-    if (f.type === 'checkbox') {
-      val = form.querySelector('[name="' + f.name + '"]:checked');
-    } else {
-      var el = form.querySelector('[name="' + f.name + '"]');
-      val = el ? (el.type === 'radio' ? form.querySelector('[name="' + f.name + '"]:checked') : el.value.trim()) : null;
-    }
-    if (!val) {
-      errors.push({ label: f.label, step: f.step });
-      if (!firstErrorStep) firstErrorStep = f.step;
-    }
-  });
-
-  if (errors.length > 0) {
-    e.preventDefault();
-    goTo(firstErrorStep);
-    var existingError = document.getElementById('validationError');
-    if (existingError) existingError.remove();
-    var errorDiv = document.createElement('div');
-    errorDiv.id = 'validationError';
-    errorDiv.style.cssText = 'background:#fff0f0;border:1px solid #ffaaaa;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:.88rem;color:#c00;';
-    errorDiv.innerHTML = '<strong>Please fill in the following fields:</strong><ul style="margin-top:8px;padding-left:18px;">' +
-      errors.filter(function(err) { return err.step === firstErrorStep; }).map(function(err) { return '<li>' + err.label + '</li>'; }).join('') +
-      '</ul>';
-    document.getElementById('step-' + firstErrorStep).prepend(errorDiv);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-  }
-
-  // Valid — show loading state and let form submit normally
+  // Show loading state and submit directly
   var btn = form.querySelector('.btn-submit');
   btn.innerHTML = 'Sending...';
   btn.disabled = true;

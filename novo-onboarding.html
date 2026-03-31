@@ -186,12 +186,8 @@ if (window.location.search.indexOf('success=1') !== -1) {
   document.documentElement.classList.add('success-mode');
 }
 </script>
-<script>
-// Immediately check URL before anything renders
-if (window.location.search.indexOf('success=1') !== -1) {
-  document.write('<style>body>*:not(#successScreen){display:none!important}.success-screen{display:flex!important}</style>');
-}
-</script>
+
+
 
 <div class="header">
   <div class="header-logo">Novo<span>.</span></div>

@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Novo – Website Onboarding</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -229,7 +232,7 @@ if (window.location.search.indexOf('success=1') !== -1) {
 </div>
 
 <div class="main">
-<form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST" enctype="multipart/form-data">
+<form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST">
 <input type="hidden" name="_next" value="https://moritzkrismayr-creator.github.io/novo-brief/success.html">
 
 <!-- STEP 1: BUSINESS INFO -->
@@ -965,11 +968,10 @@ function showFiles(input, targetId) {
 }
 
 var form = document.getElementById('onboardingForm');
+document.querySelector('.btn-submit').disabled = false;
 form.addEventListener('submit', function(e) {
-  // Show loading state and submit directly
   var btn = form.querySelector('.btn-submit');
   btn.innerHTML = 'Sending...';
-  btn.disabled = true;
 });
 
 

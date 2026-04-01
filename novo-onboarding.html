@@ -234,7 +234,6 @@ if (window.location.search.indexOf('success=1') !== -1) {
 
 <div class="main">
 <form id="onboardingForm" action="https://formspree.io/f/mnjonvlo" method="POST">
-<input type="hidden" name="_next" value="https://moritzkrismayr-creator.github.io/novo-brief/success.html">
 
 <!-- STEP 1: BUSINESS INFO -->
 <div class="step-panel active" id="step-1">
@@ -971,8 +970,31 @@ function showFiles(input, targetId) {
 var form = document.getElementById('onboardingForm');
 document.querySelector('.btn-submit').disabled = false;
 form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
   var btn = form.querySelector('.btn-submit');
   btn.innerHTML = 'Sending...';
+  btn.style.opacity = '0.7';
+
+  var data = new FormData(form);
+
+  fetch('https://formspree.io/f/mnjonvlo', {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(function(response) {
+    if (response.ok) {
+      window.location.href = 'https://moritzkrismayr-creator.github.io/novo-brief/success.html';
+    } else {
+      btn.innerHTML = 'Something went wrong — try again';
+      btn.style.opacity = '1';
+    }
+  })
+  .catch(function() {
+    btn.innerHTML = 'Something went wrong — try again';
+    btn.style.opacity = '1';
+  });
 });
 
 
